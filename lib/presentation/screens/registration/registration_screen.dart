@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:ecommerce_app/presentation/providers/auth/auth_provider.dart';
+import 'package:ecommerce_app/presentation/screens/products/product_listing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,6 +15,7 @@ class RegistrationScreen extends ConsumerStatefulWidget {
 class RegistrationScreenState extends ConsumerState<RegistrationScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +41,55 @@ class RegistrationScreenState extends ConsumerState<RegistrationScreen> {
               obscureText: true,
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                final authService = ref.read(authServiceProvider);
-                await authService.createUserWithEmailAndPassword(
-                  _emailController.text,
-                  _passwordController.text,
-                );
-              },
-              child: const Text(
-                'Register',
-              ),
-            ),
+            _isLoading
+                ? const CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      final authService = ref.read(authServiceProvider);
+                      try {
+                        await authService.createUserWithEmailAndPassword(
+                          _emailController.text,
+                          _passwordController.text,
+                        );
+                        // Navigate to ProductListingScreen on success
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const ProductListingScreen(),
+                          ),
+                          (Route<dynamic> route) => false,
+                        );
+                      } catch (e) {
+                        // Handle registration errors
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Registration Failed'),
+                              content: Text(e.toString()),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } finally {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      }
+                    },
+                    child: const Text(
+                      'Register',
+                    ),
+                  ),
           ],
         ),
       ),

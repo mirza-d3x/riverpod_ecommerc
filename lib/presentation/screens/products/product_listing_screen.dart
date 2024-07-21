@@ -40,57 +40,65 @@ class ProductListingScreen extends ConsumerWidget {
           itemCount: products.length,
           itemBuilder: (context, index) {
             final product = products[index];
-            return ListTile(
-              title: Text(product.title),
-              subtitle: Text('\$${product.price}'),
-              leading: Image.network(product.image),
-              trailing: user != null
-                  ? Consumer(
-                      builder: (context, ref, child) {
-                        final favorites = ref
-                                .watch(favoritesProvider(user.uid))
-                                .asData
-                                ?.value ??
-                            [];
-                        final isFavorite = favorites.contains(product.id);
-                        return IconButton(
-                          icon: Icon(isFavorite
-                              ? Icons.favorite
-                              : Icons.favorite_border),
-                          onPressed: () {
-                            if (user != null) {
-                              final firestoreService =
-                                  ref.watch(firestoreServiceProvider);
-                              if (isFavorite) {
-                                firestoreService.removeFavorite(
-                                    user.uid, product.id.toString());
+            return Card(
+              elevation: 4, // Adds shadow to the list item
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: ListTile(
+                contentPadding: const EdgeInsets.all(16),
+                title: Text(product.title),
+                subtitle: Text('\$${product.price}'),
+                leading: Image.network(product.image),
+                trailing: user != null
+                    ? Consumer(
+                        builder: (context, ref, child) {
+                          final favorites = ref
+                                  .watch(favoritesProvider(user.uid))
+                                  .asData
+                                  ?.value ??
+                              [];
+                          final isFavorite = favorites.contains(product.id);
+                          return IconButton(
+                            icon: Icon(
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isFavorite ? Colors.red : null,
+                            ),
+                            onPressed: () {
+                              if (user != null) {
+                                final firestoreService =
+                                    ref.watch(firestoreServiceProvider);
+                                if (isFavorite) {
+                                  firestoreService.removeFavorite(
+                                      user.uid, product.id.toString());
+                                } else {
+                                  firestoreService.addFavorite(
+                                      user.uid, product.id.toString());
+                                }
                               } else {
-                                firestoreService.addFavorite(
-                                    user.uid, product.id.toString());
+                                _showLoginDialog(context);
                               }
-                            } else {
-                              _showLoginDialog(context);
-                            }
-                          },
-                        );
-                      },
-                    )
-                  : IconButton(
-                      icon: const Icon(Icons.favorite_border),
-                      onPressed: () {
-                        _showLoginDialog(context);
-                      },
+                            },
+                          );
+                        },
+                      )
+                    : IconButton(
+                        icon: const Icon(Icons.favorite_border),
+                        onPressed: () {
+                          _showLoginDialog(context);
+                        },
+                      ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductDetailScreen(
+                        product: product,
+                      ),
                     ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductDetailScreen(
-                      product: product,
-                    ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             );
           },
         ),
@@ -110,8 +118,8 @@ class ProductListingScreen extends ConsumerWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Login Required'),
-          content:
-              const Text('You need to be logged in to add items to favorites.'),
+          content: const Text(
+              'You need to be logged in to add items to favorites.'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
