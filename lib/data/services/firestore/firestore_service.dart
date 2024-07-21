@@ -19,9 +19,8 @@ class FirestoreService {
     return _firestore.collection('favorites').doc(userId).snapshots().map(
       (doc) {
         if (doc.exists && doc.data() != null) {
-          return List<String>.from(
-            doc.data()!['favorites'],
-          );
+          final data = doc.data() as Map<String, dynamic>;
+          return List<String>.from(data['favorites'] ?? []);
         }
         return [];
       },

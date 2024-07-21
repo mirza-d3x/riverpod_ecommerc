@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:ecommerce_app/presentation/providers/auth/auth_provider.dart';
 import 'package:ecommerce_app/presentation/screens/products/product_listing_screen.dart';
 import 'package:flutter/material.dart';
