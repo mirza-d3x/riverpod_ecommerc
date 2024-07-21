@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "945157787826",
+    "project_id": "shop-management-40f3c",
+    "storage_bucket": "shop-management-40f3c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945157787826:android:1b1e288208336c2630f9ab",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4Eba8a6OZrK6KMvpFlxyhnVB81BmjnvU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945157787826:android:4696611cae13527430f9ab",
+        "android_client_info": {
+          "package_name": "com.example.note_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4Eba8a6OZrK6KMvpFlxyhnVB81BmjnvU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945157787826:android:d6812d806a3a11a930f9ab",
+        "android_client_info": {
+          "package_name": "com.example.shop_management_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4Eba8a6OZrK6KMvpFlxyhnVB81BmjnvU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
